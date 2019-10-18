@@ -1,0 +1,21 @@
+{
+  "name": "lifering",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mock-fs": "^4.10.1"
+  },
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "jsonfile": "^5.0.0"
+  }
+}
