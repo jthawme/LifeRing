@@ -1,20 +1,33 @@
 const fs = require('fs');
-const path = require('path');
 
+const mock = require('mock-fs');
 const { expect } = require('chai');
 
 const Database = require('../lib/model/Database');
 const engine = require('../lib/engine');
 
-const MOCKS = {
-  NAME: 'testdb',
-  USER: 'testuser',
-  HOURS: 12,
-  BACKUP_LIMIT: 10,
-  CRON: '* 12 * * * *'
-};
+const { MOCKS, BACKUP_FILES } = require('./data/data');
+
+const getTestingModel = () => {
+  const model = new Database(MOCKS.NAME);
+  model.fill({
+    user: MOCKS.USER,
+    hours: MOCKS.HOURS,
+    backup_limit: MOCKS.BACKUP_LIMIT
+  });
+  model._setTesting();
+
+  return model;
+}
 
 describe('Model', function() {
+  before(function(done) {
+    mock(BACKUP_FILES);
+
+    engine.runInitialise()
+      .then(() => done());
+  });
+
   describe('Instantiate', function() {
     it('should throw error without name', function() {
       expect(() => new Database()).to.throw()
@@ -81,10 +94,6 @@ describe('Model', function() {
   });
 
   describe('Load', function() {
-    before(function(done) {
-      engine.runInitialise()
-        .then(() => done());
-    });
 
     it('should error if file doesn\'t exist', function(done) {
       const model = new Database(MOCKS.NAME);
@@ -97,11 +106,6 @@ describe('Model', function() {
   });
 
   describe('Save', function() {
-    before(function(done) {
-      engine.runInitialise()
-        .then(() => done());
-    });
-
     it('should return a promise', function(done) {
       const model = new Database(MOCKS.NAME);
       model.save()
@@ -120,4 +124,75 @@ describe('Model', function() {
         })
     });
   });
+
+  describe('Backup', function() {
+
+    it('should return a file reference', function(done) {
+      const model = new Database(MOCKS.NAME);
+      model.fill({
+        user: MOCKS.USER,
+        hours: MOCKS.HOURS,
+        backup_limit: MOCKS.BACKUP_LIMIT
+      });
+      model._setTesting();
+
+      model.backup()
+        .then(({ absolute }) => {
+          try {
+            expect(absolute).to.be.a('string');
+            done();
+          } catch (e) {
+            done(e);
+          }
+        })
+    });
+
+    it('should contain reference to database in name', function(done) {
+      const model = getTestingModel();
+
+      model.backup()
+        .then(({ absolute }) => {
+          try {
+            expect(absolute).to.contain(`-${MOCKS.NAME}.tar`)
+            done();
+          } catch (e) {
+            done(e);
+          }
+        })
+    });
+  });
+
+  describe('Restore', function() {
+    it('should get backup files related to itself', function() {
+      const files = engine.getBackupFiles(MOCKS.NAME);
+      expect(files.length).to.equal(3);
+    });
+
+    it('should error when asking for an unknown restore index', function(done) {
+      const model = getTestingModel();
+
+      model.restore(5)
+        .catch(() => done());
+    });
+
+    it('should resolve when index in range', function(done) {
+      const model = getTestingModel();
+
+      model.restore(1)
+        .then(() => done());
+    });
+  });
+
+  describe('Trim', function() {
+    it('should reduce backups to limit', function() {
+      const model = getTestingModel();
+
+      const deleted = model.limit(1);
+      expect(deleted).to.equal(2);
+    });
+  });
+
+  after(function() {
+    mock.restore();
+  })
 });

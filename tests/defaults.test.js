@@ -8,11 +8,11 @@ const { expect } = require('chai');
 const engine = require('../lib/engine');
 const constants = require('../lib/constants');
 
-before(function() {
-  mock();
-});
-
 describe('Intialise', function() {
+  before(function() {
+    mock();
+  });
+
   describe('Default settings', function() {
     it('should include all default keys', function() {
       expect(engine.getDefaultSettings()).to.have.all.keys('backup_dir', 'settings_dir');
@@ -97,12 +97,9 @@ describe('Intialise', function() {
         .then(() => done());
     });
 
-    it('should return settings', function(done) {
-      engine.getSettings()
-        .then(settings => {
-          expect(settings).to.be.an('object');
-          done();
-        });
+    it('should return settings', function() {
+      const settings = engine.getSettings()
+      expect(settings).to.be.an('object');
     });
   });
 
@@ -119,8 +116,9 @@ describe('Intialise', function() {
       expect(exists).to.equal(false);
     });
   });
+
+  after(function() {
+    mock.restore();
+  })
 });
 
-after(function() {
-  mock.restore();
-})
