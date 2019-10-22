@@ -1,6 +1,6 @@
 {
   "name": "lifering",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A node.js postgres database backup/restore tool",
   "main": "index.js",
   "bin": {
