@@ -1,7 +1,7 @@
 {
   "name": "lifering",
-  "version": "0.0.2",
-  "description": "",
+  "version": "0.0.5",
+  "description": "A node.js postgres database backup/restore tool",
   "main": "index.js",
   "bin": {
     "lifering": "./lib/cli.js"
@@ -10,7 +10,7 @@
     "test": "mocha ./tests",
     "push:patch": "npm version patch && npm publish"
   },
-  "keywords": [],
+  "keywords": ["postgres", "backup", "scheduler", "node"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
