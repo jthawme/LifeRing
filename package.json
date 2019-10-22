@@ -7,7 +7,8 @@
     "lifering": "./lib/cli.js"
   },
   "scripts": {
-    "test": "mocha ./tests"
+    "test": "mocha ./tests",
+    "publish": "npm version patch && npm publish"
   },
   "keywords": [],
   "author": "",
