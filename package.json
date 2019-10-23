@@ -6,6 +6,10 @@
   "bin": {
     "lifering": "./lib/cli.js"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jthawme/LifeRing.git"
+  },
   "scripts": {
     "test": "mocha ./tests",
     "push:patch": "npm version patch && npm publish",

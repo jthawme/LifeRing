@@ -1,3 +1,7 @@
+### Warning
+
+This package should be suitable for your needs, but no that is not highly tested. Using with production data may not be wise right now! If you are able to help/advise testing more thoroughly please leave an issue
+
 # Lifering
 
 A helper tool to allow for easier backup and restore of Postgres databases
