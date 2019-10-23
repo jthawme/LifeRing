@@ -1,14 +1,14 @@
 {
   "name": "lifering",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A node.js postgres database backup/restore tool",
   "main": "index.js",
   "bin": {
     "lifering": "./lib/cli.js"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/jthawme/LifeRing.git"
+    "type": "git",
+    "url": "https://github.com/jthawme/LifeRing.git"
   },
   "scripts": {
     "test": "mocha ./tests",
