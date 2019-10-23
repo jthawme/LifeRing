@@ -11,7 +11,7 @@
     "url": "https://github.com/jthawme/LifeRing.git"
   },
   "scripts": {
-    "test": "mocha ./tests",
+    "test": "nyc --reporter=text mocha ./tests",
     "push:patch": "npm version patch && npm publish",
     "postinstall": "node ./lib/scripts/postinstall.js"
   },
@@ -27,7 +27,8 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^6.2.2",
-    "mock-fs": "^4.10.1"
+    "mock-fs": "^4.10.1",
+    "nyc": "^14.1.1"
   },
   "dependencies": {
     "chalk": "^2.4.2",
